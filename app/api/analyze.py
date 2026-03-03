@@ -16,8 +16,7 @@ async def analyze_student_profile(payload: StudentProfileInput):
         student_intent = detect_intent(payload.help_description)
         
         # 2. You can dynamically modify the prompt based on intent!
-        # For example, appending the detected intent to the student's description
-        # so the LLM knows exactly what mode to be in.
+        # For example, appending the detected intent to the student's description so the LLM knows exactly what mode to be in.
         enhanced_description = f"[Detected Goal: {student_intent.replace('_', ' ').title()}] {payload.help_description}"
         payload.help_description = enhanced_description
         

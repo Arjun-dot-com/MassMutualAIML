@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List, Optional
+from typing import List
 
 class RecommendationItem(BaseModel):
     chapter: str = Field(..., description="Detected chapter or topic")
@@ -10,9 +10,9 @@ class RecommendationItem(BaseModel):
         ge=0.0, le=1.0, 
         description="Relevance score between 0.0 and 1.0"
     )
-    # The new, explicitly separated link fields:
-    video_link: Optional[str] = Field(default=None, description="The YouTube link provided in the Available Courses")
-    reading_link: Optional[str] = Field(default=None, description="The website reading link provided in the Available Courses")
+    # Reverted to strict strings to prevent Groq API validation errors
+    video_link: str = Field(..., description="The exact YouTube URL provided in the Available Courses. If none, output 'N/A'")
+    reading_link: str = Field(..., description="The exact website URL provided in the Available Courses. If none, output 'N/A'")
 
 class AIAnalysisOutput(BaseModel):
     message: str = Field(..., description="Summary explanation from the AI")
@@ -21,21 +21,3 @@ class AIAnalysisOutput(BaseModel):
         ..., 
         description="List of personalized recommendations based on the student's needs"
     )
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "message": "Based on your weaknesses, here is your personalized study plan:",
-                "new_level": "intermediate",
-                "updated_recommendation": [
-                    {
-                        "chapter": "Introduction to Trigonometry",
-                        "focus_area": "Concept clarity + 20 practice problems on identities",
-                        "difficulty": "hard",
-                        "priority_score": 0.85,
-                        "video_link": "https://youtu.be/wdaBwIv7Jso?si=z-njhrsHQvc3m8_1",
-                        "reading_link": "https://byjus.com/ncert-solutions-class-10-maths/chapter-8-introduction-to-trigonometry/"
-                    }
-                ]
-            }
-        }

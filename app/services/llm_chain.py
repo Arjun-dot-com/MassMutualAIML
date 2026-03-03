@@ -7,7 +7,7 @@ from langchain_groq import ChatGroq
 from app.services.recommender import get_relevant_resources, format_resources_for_prompt 
 
 llm = ChatGroq(
-    model="llama-3.1-8b-instant", 
+    model="llama-3.3-70b-versatile", 
     temperature=0.0,  # Set to 0.0 for maximum stability and factual adherence
     api_key=settings.GROQ_API_KEY
 )
@@ -23,7 +23,7 @@ CRITICAL INSTRUCTION:
 You MUST select your recommendations ONLY from the 'Available Courses' provided below. 
 Do not invent or hallucinate course titles. Map their specific struggles to the most relevant available course.
 
-IMPORTANT: Extract the 'Video Link' and 'Reading Link' from the Available Courses and populate the 'video_link' and 'reading_link' output fields.
+IMPORTANT: You MUST extract the 'Video Link' and 'Reading Link' from the Available Courses and populate the 'video_link' and 'reading_link' output fields. If a link is missing, you must output "N/A" for that field.
 
 Assess if their new level is 'beginner', 'intermediate', or 'advanced'.
 Keep focus areas concise and actionable.

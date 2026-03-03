@@ -10,8 +10,7 @@ class RecommendationItem(BaseModel):
         ge=0.0, le=1.0, 
         description="Relevance score between 0.0 and 1.0"
     )
-    resource_link: str = Field(..., description="The exact URL to the video or PDF provided in the Available Courses")
-
+    resource_links: str = Field(..., description="The URLs to the video and/or reading material provided in the Available Courses")
 class AIAnalysisOutput(BaseModel):
     message: str = Field(..., description="Summary explanation from the AI")
     new_level: str = Field(..., description="Assessed level: beginner | intermediate | advanced")

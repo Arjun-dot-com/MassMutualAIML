@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from typing import List
+from typing import List, Optional
 
 class RecommendationItem(BaseModel):
     chapter: str = Field(..., description="Detected chapter or topic")
@@ -10,10 +10,10 @@ class RecommendationItem(BaseModel):
         ge=0.0, le=1.0, 
         description="Relevance score between 0.0 and 1.0"
     )
-    resource_links: str = Field(
-        default="Links coming soon", 
-        description="The URLs to the video and/or reading material provided in the Available Courses"
-    )
+    # The new, explicitly separated link fields:
+    video_link: Optional[str] = Field(default=None, description="The YouTube link provided in the Available Courses")
+    reading_link: Optional[str] = Field(default=None, description="The website reading link provided in the Available Courses")
+
 class AIAnalysisOutput(BaseModel):
     message: str = Field(..., description="Summary explanation from the AI")
     new_level: str = Field(..., description="Assessed level: beginner | intermediate | advanced")
@@ -29,10 +29,12 @@ class AIAnalysisOutput(BaseModel):
                 "new_level": "intermediate",
                 "updated_recommendation": [
                     {
-                        "chapter": "Trigonometry",
+                        "chapter": "Introduction to Trigonometry",
                         "focus_area": "Concept clarity + 20 practice problems on identities",
-                        "difficulty": "medium",
-                        "priority_score": 0.82
+                        "difficulty": "hard",
+                        "priority_score": 0.85,
+                        "video_link": "https://youtu.be/wdaBwIv7Jso?si=z-njhrsHQvc3m8_1",
+                        "reading_link": "https://byjus.com/ncert-solutions-class-10-maths/chapter-8-introduction-to-trigonometry/"
                     }
                 ]
             }

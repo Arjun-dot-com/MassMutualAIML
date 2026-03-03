@@ -8,13 +8,13 @@ from app.services.recommender import get_relevant_resources, format_resources_fo
 
 llm = ChatGroq(
     model="llama-3.1-8b-instant", 
-    temperature=0.2, 
+    temperature=0.0,  # Set to 0.0 for maximum stability and factual adherence
     api_key=settings.GROQ_API_KEY
 )
 
 structured_llm = llm.with_structured_output(AIAnalysisOutput)
 
-# Tell the AI to ONLY use the provided courses
+# Tell the AI to ONLY use the provided courses and strictly extract the links
 system_prompt = """
 You are an expert AI educational tutor and curriculum planner.
 Your goal is to analyze a student's profile and generate a highly personalized study plan.
@@ -23,14 +23,12 @@ CRITICAL INSTRUCTION:
 You MUST select your recommendations ONLY from the 'Available Courses' provided below. 
 Do not invent or hallucinate course titles. Map their specific struggles to the most relevant available course.
 
-IMPORTANT: You MUST populate the 'resource_links' field for every recommendation using the Video Link and Reading Link provided in the text.
+IMPORTANT: Extract the 'Video Link' and 'Reading Link' from the Available Courses and populate the 'video_link' and 'reading_link' output fields.
 
 Assess if their new level is 'beginner', 'intermediate', or 'advanced'.
 Keep focus areas concise and actionable.
 """
 
-# Add the {available_courses} variable to the prompt template
-# Add the {available_courses} variable to the prompt template
 prompt_template = ChatPromptTemplate.from_messages([
     ("system", system_prompt),
     ("human", "Student Email: {student_email}\n"

@@ -23,6 +23,8 @@ CRITICAL INSTRUCTION:
 You MUST select your recommendations ONLY from the 'Available Courses' provided below. 
 Do not invent or hallucinate course titles. Map their specific struggles to the most relevant available course.
 
+IMPORTANT: You MUST populate the 'resource_links' field for every recommendation using the Video Link and Reading Link provided in the text.
+
 Assess if their new level is 'beginner', 'intermediate', or 'advanced'.
 Keep focus areas concise and actionable.
 """

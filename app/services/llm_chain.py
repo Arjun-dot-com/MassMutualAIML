@@ -4,7 +4,6 @@ from app.models.input import StudentProfileInput
 from app.models.output import AIAnalysisOutput
 from app.core.config import settings
 from langchain_groq import ChatGroq
-# 1. Import your new recommender engine
 from app.services.recommender import get_relevant_resources, format_resources_for_prompt 
 
 llm = ChatGroq(
@@ -15,7 +14,7 @@ llm = ChatGroq(
 
 structured_llm = llm.with_structured_output(AIAnalysisOutput)
 
-# 2. Tell the AI to ONLY use the provided courses
+# Tell the AI to ONLY use the provided courses
 system_prompt = """
 You are an expert AI educational tutor and curriculum planner.
 Your goal is to analyze a student's profile and generate a highly personalized study plan.
@@ -33,7 +32,7 @@ Keep focus areas concise and actionable.
 prompt_template = ChatPromptTemplate.from_messages([
     ("system", system_prompt),
     ("human", "Student Email: {student_email}\n"
-              "Class/Grade: {class}\n"  # <--- Change this from {student_class} to {class}
+              "Class/Grade: {class}\n" 
               "Subject: {subject}\n"
               "Current Score: {current_score}/100\n"
               "Student's Description of Struggles: {help_description}\n\n"
@@ -47,7 +46,7 @@ def generate_recommendation(student_data: StudentProfileInput) -> AIAnalysisOutp
     Retrieves real courses, passes them to the LLM alongside the student data, 
     and returns a guaranteed structured Pydantic output.
     """
-    # 3. Fetch and format the real courses based on the student's grade and subject
+    # Fetch and format the real courses based on the student's grade and subject
     raw_courses = get_relevant_resources(student_data.subject, student_data.student_class)
     formatted_courses = format_resources_for_prompt(raw_courses)
     
